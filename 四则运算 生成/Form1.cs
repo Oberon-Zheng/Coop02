@@ -58,5 +58,10 @@ namespace 四则运算_生成
         {
             stpQDiv.Enabled = cBoxQTypeDiv.Checked && cBoxQTypeDiv.Enabled;
         }
+
+        private void stpMaxOptr_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

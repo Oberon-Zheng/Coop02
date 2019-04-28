@@ -196,6 +196,7 @@
             0,
             0,
             0});
+            this.stpMaxOptr.ValueChanged += new System.EventHandler(this.stpMaxOptr_ValueChanged);
             // 
             // stpCQuizNum
             // 

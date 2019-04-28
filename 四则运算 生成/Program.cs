@@ -15,7 +15,7 @@ namespace 四则运算_生成
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new FrmQuizGen());
         }
     }
 }

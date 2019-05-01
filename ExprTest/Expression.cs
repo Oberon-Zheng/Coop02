@@ -10,10 +10,10 @@ namespace MyExpression
     public enum ExprOprt:byte
     {
         NIL = 0,
-        ADD,
-        SUB,
-        MUL,
-        DIV
+        ADD = 0x01,
+        SUB = 0x02,
+        MUL = 0x04,
+        DIV = 0x08
     }
 
     public static class ExprUtil
@@ -46,6 +46,36 @@ namespace MyExpression
                     return '/';
                 case ExprOprt.NIL:
                     return char.MinValue;
+                default:
+                    throw new InvalidExprOprtParseException(oprt);
+            }
+        }
+        public static bool GetOprtAssociative(ExprOprt oprt)
+        {
+            switch(oprt)
+            {
+                case ExprOprt.ADD:
+                case ExprOprt.MUL:
+                    return true;
+                case ExprOprt.DIV:
+                case ExprOprt.SUB:
+                    return false;
+                default:
+                    throw new InvalidExprOprtParseException(oprt);
+            }
+        }
+        public static ExprOprt GetInverseOprt(ExprOprt oprt)
+        {
+            switch (oprt)
+            {
+                case ExprOprt.ADD:
+                    return ExprOprt.SUB;
+                case ExprOprt.SUB:
+                    return ExprOprt.ADD;
+                case ExprOprt.MUL:
+                    return ExprOprt.DIV;
+                case ExprOprt.DIV:
+                    return ExprOprt.MUL;
                 default:
                     throw new InvalidExprOprtParseException(oprt);
             }
@@ -156,34 +186,19 @@ namespace MyExpression
         {
             get
             {
-                switch(oprt)
-                {
-                    case ExprOprt.ADD:
-                    case ExprOprt.SUB:
-                        return 0;
-                    case ExprOprt.MUL:
-                    case ExprOprt.DIV:
-                        return 1;
-                    default:
-                        throw new InvalidExprOprtParseException(oprt);
-                }
+                return ExprUtil.GetOprtPriority(oprt);
             }
         }
         public override bool Associative
         {
             get
             {
-                switch (oprt)
+                bool assoc =  ExprUtil.GetOprtAssociative(oprt);
+                if(assoc)
                 {
-                    case ExprOprt.ADD:
-                    case ExprOprt.MUL:
-                        return true;
-                    case ExprOprt.SUB:
-                    case ExprOprt.DIV:
-                        return false;
-                    default:
-                        throw new InvalidExprOprtParseException(oprt);
+                    return expr0.Associative;
                 }
+                return assoc;
             }
         }
 
@@ -198,7 +213,7 @@ namespace MyExpression
                     {
                         return true;
                     }
-                    else if(expr0.Priority == Priority && expr1.Priority == Priority && expr1.Associative)
+                    else if((expr0 is AtomExpr || expr0.Priority >= Priority) && expr1.Priority == Priority && (expr0.Associative || expr1.Associative))
                     {
                         return true;
                     }
@@ -290,7 +305,11 @@ namespace MyExpression
                     return strbExpr.ToString();
                 }
             }
-            //throw new NotImplementedException();
+        }
+
+        public void InvertOprt()
+        {
+            oprt = ExprUtil.GetInverseOprt(oprt);
         }
 
         /* Obsoleted Expr(string exprstr)
@@ -309,8 +328,6 @@ namespace MyExpression
 
             }
         }*/
-
-
 
     }
         

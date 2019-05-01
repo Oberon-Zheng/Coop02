@@ -32,12 +32,17 @@ namespace MyExpression.Tests
                         )
                 )
             );
-            //((e.expr0) as Expr).oprt = ExprOprt.ADD;
-            //((e.expr0) as Expr).expr0 = new AtomExpr(3.0);
-            //((e.expr0) as Expr).expr1 = new AtomExpr(2.0);
-            //((e.expr1) as Expr).oprt = ExprOprt.MUL;
-            //((e.expr1) as Expr).expr0 = new AtomExpr(36.0);
-            //((e.expr1) as Expr).expr1 = new AtomExpr(0.0);
+            ExprBuilder ebuild = new ExprBuilder();
+            ebuild.maxOpnd = 8;
+            ebuild.maxValue = 10;
+            ebuild.allowOprt = (byte)ExprOprt.DIV | (byte)ExprOprt.ADD | (byte)ExprOprt.SUB;
+            ebuild.allowNeg = true;
+            ebuild.allowBrack = true;
+            //ebuild.maxOpnd = 0;
+            while(true)
+            {
+                ebuild.Generate();
+            }
             var i = e.ParseValue();
             Assert.Fail();
         }

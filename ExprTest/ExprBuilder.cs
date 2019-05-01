@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
+using System.Diagnostics;
 
 namespace MyExpression
 {
@@ -30,6 +32,19 @@ namespace MyExpression
             allowCplxExpr = false;
         }
 
+        public bool IsAllowed(ExprOprt oprt)
+        {
+            return (allowOprt & (byte)oprt) != 0;
+        }
+        public void Allow(ExprOprt oprt)
+        {
+            allowOprt |= (byte)oprt;
+        }
+        public void Disallow(ExprOprt oprt)
+        {
+            allowOprt = (byte)(allowOprt & ~(int)oprt);
+        }
+
         /// <summary>
         /// Fisher-Yates Shuffle:Shuffle the list of subexpressions to combine.
         /// </summary>
@@ -52,23 +67,36 @@ namespace MyExpression
             Random r = new Random();
             return oprts[r.Next(oprts.Length)];
         }
+        private ExprOprt ChooseOprt(HashSet<ExprOprt> oprtSet)
+        {
+            var oprts = new List<ExprOprt>(oprtSet);
+            Random r = new Random();
+            return oprts[r.Next(oprts.Count)];
+        }
+
+        private bool AssociativityEnabled(HashSet<ExprOprt> oprtSet)
+        {
+            return oprtSet.Contains(ExprOprt.ADD) || oprtSet.Contains(ExprOprt.MUL);
+        }
 
         /// <summary>
         ///  Generate a expression tree based on the constraints.
         /// </summary>
-        public void Generate()
+        public Expr Generate()
         {
+            subExprList.Clear();
             Random r = new Random();
-            //Random out atomic operands.
+            #region Random out atomic operands.
             for (var i = 0;i < maxOpnd;i++) 
             {
                 double dRand = r.NextDouble();
-                if(allowNeg)
+                if (allowNeg)
                 {
                     dRand -= 0.5;
+                    dRand *= 2;
                 }
                 dRand *= maxValue;
-                if(!allowDec)
+                if ( !allowDec )
                 {
                     dRand = Math.Truncate(dRand);
                 }
@@ -76,41 +104,146 @@ namespace MyExpression
                 {
                     dRand = Math.Round(dRand, maxPrecision);
                 }
+                if ( allowOprt == (byte)ExprOprt.DIV && Math.Abs(dRand) < double.Epsilon )
+                {
+                    i--;
+                    continue;
+                }
                 AtomExpr aexp = new AtomExpr(dRand);
                 subExprList.Add(aexp);
             }
-
+            if ( subExprList == null || subExprList.Count <= 0 )
+            {
+                throw new NoExprFoundException();
+            }
+            #endregion
             Shuffle();
 
-            Expr ecombine = new Expr();
-            ExprOprt oprt = ExprOprt.NIL;
-            ExprOprt[] oplist = Enum.GetValues(typeof(ExprOprt)) as ExprOprt[];
-            ecombine.expr0 = subExprList[0];
-            ecombine.expr1 = subExprList[1];
-            while (subExprList.Count > 1)
+            HashSet<ExprOprt> hsetOprt = new HashSet<ExprOprt>(Enum.GetValues(typeof(ExprOprt)) as IEnumerable<ExprOprt>);
+
+            #region Operator set is culled by allowOprt. 
+            hsetOprt.Remove(ExprOprt.NIL);
+            if ( !IsAllowed(ExprOprt.ADD) )
             {
-                if (ecombine.expr1.ParseValue() == 0)
+                hsetOprt.Remove(ExprOprt.ADD);
+            }
+            if ( !IsAllowed(ExprOprt.SUB) )
+            {
+                hsetOprt.Remove(ExprOprt.SUB);
+            }
+            if ( !IsAllowed(ExprOprt.MUL) )
+            {
+                hsetOprt.Remove(ExprOprt.MUL);
+            }
+            if ( !IsAllowed(ExprOprt.DIV) )
+            {
+                hsetOprt.Remove(ExprOprt.DIV);
+            }
+            #endregion
+
+            if(hsetOprt.Count == 0)
+            {
+                throw new NoOprtFoundException();
+            }
+
+            var origOprtSet = new HashSet<ExprOprt>(hsetOprt);
+            #region Generating Expression
+            while ( subExprList.Count > 1 )
+            {
+                Expr ecombine = new Expr();
+                ExprBase expr0 = subExprList[0];
+                ExprBase expr1 = subExprList[1];
+                hsetOprt = new HashSet<ExprOprt>(origOprtSet);
+                if ( Math.Abs(expr1.ParseValue()) < double.Epsilon)
                 {
-                    int ind = r.Next(1, oplist.Length - 1);
-                    if (!allowNeg && ecombine.expr0.ParseValue() < 0)
+                    hsetOprt.Remove(ExprOprt.DIV);
+                }
+
+                if ( !allowBrack )
+                {
+                    if ( !allowNeg && ( expr0.ParseValue() < expr1.ParseValue() ) )
                     {
-                        while (oplist[ind]==ExprOprt.SUB)
+                        //不允许负数出现，若左<右则不允许减法为合并运算
+                        hsetOprt.Remove(ExprOprt.SUB);
+                    }
+                    if( AssociativityEnabled(hsetOprt) )
+                    {
+                        if (expr1 is Expr)
                         {
-                            ind = r.Next(1, oplist.Length - 1);
+                            if(expr1.Priority == 1 || (expr1 as Expr).oprt == ExprOprt.SUB)
+                            {
+                                hsetOprt.Remove(ExprOprt.SUB);
+                            }
+                            if (!expr1.Associative)
+                            {
+                                //(expr1 as Expr).InvertOprt();
+                                hsetOprt.Remove(ExprOprt.DIV);
+                            }
+                            if (expr0.Priority == 0 || expr1.Priority == 0)
+                            {
+                                hsetOprt.Remove(ExprOprt.MUL);
+                                hsetOprt.Remove(ExprOprt.DIV);
+                            }
+                        }
+                        else
+                        {
+                            if (expr0.Priority == 0)
+                            {
+                                hsetOprt.Remove(ExprOprt.MUL);
+                                hsetOprt.Remove(ExprOprt.DIV);
+                            }
                         }
                     }
-                    if(!allowBrack)
+                    else
                     {
-                        ecombine.oprt = oplist[ind];
-                        switch (ecombine.oprt)
+                        if (expr0 is Expr)
                         {
-                            case ExprOprt.SUB:
-
-                                break;
+                            if (expr0.Priority == 0)
+                            {
+                                hsetOprt.Remove(ExprOprt.DIV);
+                            }
                         }
                     }
                 }
+                if( hsetOprt.Count == 0 )
+                {
+                    throw new NoOprtFoundException();
+                }
+                ecombine.expr0 = expr0;
+                ecombine.expr1 = expr1;
+                ecombine.oprt = ChooseOprt(hsetOprt);
+                if( !allowBrack && !ecombine.IsNaturalOrder )
+                {
+                    return null;
+                }
+                if( AssociativityEnabled(hsetOprt) )
+                {
+                    subExprList.Remove(expr0);
+                    subExprList.Remove(expr1);
+                    subExprList.Add(ecombine);
+                    Shuffle();
+                }
+                else
+                {
+                    subExprList[0] = ecombine;
+                    subExprList.Remove(expr1);
+                }
             }
+            return subExprList[0] as Expr;
+            #endregion
+        }
+    }
+
+    public class NoExprFoundException : Exception
+    {
+        public NoExprFoundException() : base("\nNo available expressions!\n(Possibly maxOpnd is 0)\n")
+        {
+        }
+    }
+    public class NoOprtFoundException : Exception
+    {
+        public NoOprtFoundException():base("\nNo available operators!\n(Possibly hsetOprt is empty)\n")
+        {
         }
     }
 }

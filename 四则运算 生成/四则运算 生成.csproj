@@ -74,5 +74,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExprTest\MyExpression.csproj">
+      <Project>{359584f5-ad51-434e-9274-4eb38da3e0ec}</Project>
+      <Name>MyExpression</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

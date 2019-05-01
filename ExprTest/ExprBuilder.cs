@@ -84,153 +84,209 @@ namespace MyExpression
         /// </summary>
         public Expr Generate()
         {
-            subExprList.Clear();
-            Random r = new Random();
-            #region Random out atomic operands.
-            for (var i = 0;i < maxOpnd;i++) 
-            {
-                double dRand = r.NextDouble();
-                if (allowNeg)
-                {
-                    dRand -= 0.5;
-                    dRand *= 2;
-                }
-                dRand *= maxValue;
-                if ( !allowDec )
-                {
-                    dRand = Math.Truncate(dRand);
-                }
-                else
-                {
-                    dRand = Math.Round(dRand, maxPrecision);
-                }
-                if ( allowOprt == (byte)ExprOprt.DIV && Math.Abs(dRand) < double.Epsilon )
-                {
-                    i--;
-                    continue;
-                }
-                AtomExpr aexp = new AtomExpr(dRand);
-                subExprList.Add(aexp);
-            }
-            if ( subExprList == null || subExprList.Count <= 0 )
-            {
-                throw new NoExprFoundException();
-            }
-            #endregion
-            Shuffle();
-
             HashSet<ExprOprt> hsetOprt = new HashSet<ExprOprt>(Enum.GetValues(typeof(ExprOprt)) as IEnumerable<ExprOprt>);
-
-            #region Operator set is culled by allowOprt. 
             hsetOprt.Remove(ExprOprt.NIL);
-            if ( !IsAllowed(ExprOprt.ADD) )
+            if (allowCplxExpr)
             {
-                hsetOprt.Remove(ExprOprt.ADD);
-            }
-            if ( !IsAllowed(ExprOprt.SUB) )
-            {
-                hsetOprt.Remove(ExprOprt.SUB);
-            }
-            if ( !IsAllowed(ExprOprt.MUL) )
-            {
-                hsetOprt.Remove(ExprOprt.MUL);
-            }
-            if ( !IsAllowed(ExprOprt.DIV) )
-            {
-                hsetOprt.Remove(ExprOprt.DIV);
-            }
-            #endregion
-
-            if(hsetOprt.Count == 0)
-            {
-                throw new NoOprtFoundException();
-            }
-
-            var origOprtSet = new HashSet<ExprOprt>(hsetOprt);
-            #region Generating Expression
-            while ( subExprList.Count > 1 )
-            {
-                Expr ecombine = new Expr();
-                ExprBase expr0 = subExprList[0];
-                ExprBase expr1 = subExprList[1];
-                hsetOprt = new HashSet<ExprOprt>(origOprtSet);
-                if ( Math.Abs(expr1.ParseValue()) < double.Epsilon)
+                subExprList.Clear();
+                Random r = new Random();
+                #region Random out atomic operands.
+                for (var i = 0; i < maxOpnd; i++)
+                {
+                    double dRand = r.NextDouble();
+                    if (allowNeg)
+                    {
+                        dRand -= 0.5;
+                        dRand *= 2;
+                    }
+                    dRand *= maxValue;
+                    if (!allowDec)
+                    {
+                        dRand = Math.Truncate(dRand);
+                    }
+                    else
+                    {
+                        dRand = Math.Round(dRand, maxPrecision);
+                    }
+                    if (allowOprt == (byte)ExprOprt.DIV && Math.Abs(dRand) < double.Epsilon)
+                    {
+                        i--;
+                        continue;
+                    }
+                    AtomExpr aexp = new AtomExpr(dRand);
+                    subExprList.Add(aexp);
+                }
+                if (subExprList == null || subExprList.Count <= 0)
+                {
+                    throw new NoExprFoundException();
+                }
+                #endregion
+                Shuffle();
+                #region Operator set is culled by allowOprt. 
+                if (!IsAllowed(ExprOprt.ADD))
+                {
+                    hsetOprt.Remove(ExprOprt.ADD);
+                }
+                if (!IsAllowed(ExprOprt.SUB))
+                {
+                    hsetOprt.Remove(ExprOprt.SUB);
+                }
+                if (!IsAllowed(ExprOprt.MUL))
+                {
+                    hsetOprt.Remove(ExprOprt.MUL);
+                }
+                if (!IsAllowed(ExprOprt.DIV))
                 {
                     hsetOprt.Remove(ExprOprt.DIV);
                 }
+                #endregion
 
-                if ( !allowBrack )
+                if (hsetOprt.Count == 0)
                 {
-                    if ( !allowNeg && ( expr0.ParseValue() < expr1.ParseValue() ) )
+                    throw new NoOprtFoundException();
+                }
+
+                var origOprtSet = new HashSet<ExprOprt>(hsetOprt);
+                #region Generating Expression
+                while (subExprList.Count > 1)
+                {
+                    Expr ecombine = new Expr();
+                    ExprBase expr0 = subExprList[0];
+                    ExprBase expr1 = subExprList[1];
+                    hsetOprt = new HashSet<ExprOprt>(origOprtSet);
+                    if (Math.Abs(expr1.ParseValue()) < double.Epsilon)
                     {
-                        //不允许负数出现，若左<右则不允许减法为合并运算
-                        hsetOprt.Remove(ExprOprt.SUB);
+                        hsetOprt.Remove(ExprOprt.DIV);
                     }
-                    if( AssociativityEnabled(hsetOprt) )
+
+                    if (!allowBrack)
                     {
-                        if (expr1 is Expr)
+                        if (!allowNeg && (expr0.ParseValue() < expr1.ParseValue()))
                         {
-                            if(expr1.Priority == 1 || (expr1 as Expr).oprt == ExprOprt.SUB)
+                            //不允许负数出现，若左<右则不允许减法为合并运算
+                            hsetOprt.Remove(ExprOprt.SUB);
+                        }
+                        if (AssociativityEnabled(hsetOprt))
+                        {
+                            if (expr1 is Expr)
                             {
-                                hsetOprt.Remove(ExprOprt.SUB);
+                                if (expr1.Priority == 1 || (expr1 as Expr).oprt == ExprOprt.SUB)
+                                {
+                                    hsetOprt.Remove(ExprOprt.SUB);
+                                }
+                                if (!expr1.Associative)
+                                {
+                                    //(expr1 as Expr).InvertOprt();
+                                    hsetOprt.Remove(ExprOprt.DIV);
+                                }
+                                if (expr0.Priority == 0 || expr1.Priority == 0)
+                                {
+                                    hsetOprt.Remove(ExprOprt.MUL);
+                                    hsetOprt.Remove(ExprOprt.DIV);
+                                }
                             }
-                            if (!expr1.Associative)
+                            else
                             {
-                                //(expr1 as Expr).InvertOprt();
-                                hsetOprt.Remove(ExprOprt.DIV);
-                            }
-                            if (expr0.Priority == 0 || expr1.Priority == 0)
-                            {
-                                hsetOprt.Remove(ExprOprt.MUL);
-                                hsetOprt.Remove(ExprOprt.DIV);
+                                if (expr0.Priority == 0)
+                                {
+                                    hsetOprt.Remove(ExprOprt.MUL);
+                                    hsetOprt.Remove(ExprOprt.DIV);
+                                }
                             }
                         }
                         else
                         {
-                            if (expr0.Priority == 0)
+                            if (expr0 is Expr)
                             {
-                                hsetOprt.Remove(ExprOprt.MUL);
-                                hsetOprt.Remove(ExprOprt.DIV);
+                                if (expr0.Priority == 0)
+                                {
+                                    hsetOprt.Remove(ExprOprt.DIV);
+                                }
                             }
                         }
+                    }
+                    if (hsetOprt.Count == 0)
+                    {
+                        throw new NoOprtFoundException();
+                    }
+                    ecombine.expr0 = expr0;
+                    ecombine.expr1 = expr1;
+                    ecombine.oprt = ChooseOprt(hsetOprt);
+                    if (!allowBrack && !ecombine.IsNaturalOrder)
+                    {
+                        return null;
+                    }
+                    if (AssociativityEnabled(hsetOprt))
+                    {
+                        subExprList.Remove(expr0);
+                        subExprList.Remove(expr1);
+                        subExprList.Add(ecombine);
+                        Shuffle();
                     }
                     else
                     {
-                        if (expr0 is Expr)
-                        {
-                            if (expr0.Priority == 0)
-                            {
-                                hsetOprt.Remove(ExprOprt.DIV);
-                            }
-                        }
+                        subExprList[0] = ecombine;
+                        subExprList.Remove(expr1);
                     }
                 }
-                if( hsetOprt.Count == 0 )
-                {
-                    throw new NoOprtFoundException();
-                }
-                ecombine.expr0 = expr0;
-                ecombine.expr1 = expr1;
-                ecombine.oprt = ChooseOprt(hsetOprt);
-                if( !allowBrack && !ecombine.IsNaturalOrder )
-                {
-                    return null;
-                }
-                if( AssociativityEnabled(hsetOprt) )
-                {
-                    subExprList.Remove(expr0);
-                    subExprList.Remove(expr1);
-                    subExprList.Add(ecombine);
-                    Shuffle();
-                }
-                else
-                {
-                    subExprList[0] = ecombine;
-                    subExprList.Remove(expr1);
-                }
+                return subExprList[0] as Expr;
+                #endregion
             }
-            return subExprList[0] as Expr;
-            #endregion
+            else
+            {
+                Random r = new Random();
+                #region Random out atomic operands.
+                
+                    double dRand = r.NextDouble();
+                    if (allowNeg)
+                    {
+                        dRand -= 0.5;
+                        dRand *= 2;
+                    }
+                    dRand *= maxValue;
+                    if (!allowDec)
+                    {
+                        dRand = Math.Truncate(dRand);
+                    }
+                    else
+                    {
+                        dRand = Math.Round(dRand, maxPrecision);
+                    }
+                    AtomExpr aexp0 = new AtomExpr(dRand);
+                    dRand = r.NextDouble();
+                    if (allowNeg)
+                    {
+                        dRand -= 0.5;
+                        dRand *= 2;
+                    }
+                    dRand *= maxValue;
+                    if (!allowDec)
+                    {
+                        dRand = Math.Truncate(dRand);
+                    }
+                    else
+                    {
+                        dRand = Math.Round(dRand, maxPrecision);
+                    }
+                    AtomExpr aexp1 = new AtomExpr(dRand);
+                Expr ecombine = new Expr();
+                if(!allowNeg)
+                {
+                    if (aexp0.ParseValue()<aexp1.ParseValue())
+                    {
+                        hsetOprt.Remove(ExprOprt.SUB);
+                    }
+
+                }
+                if(aexp1.ParseValue()==0)
+                {
+                    hsetOprt.Remove(ExprOprt.DIV);
+                }
+                ecombine.oprt = ChooseOprt(hsetOprt);
+                ecombine.expr0 = aexp0;
+                ecombine.expr1 = aexp1;
+                return ecombine;
+            }
         }
     }
 

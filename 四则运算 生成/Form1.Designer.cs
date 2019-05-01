@@ -54,10 +54,10 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.cBoxAllowNeg = new System.Windows.Forms.CheckBox();
             this.cBoxAllowFrac = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnGenerate = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnCGenerate = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.lBoxQuizDisp = new System.Windows.Forms.ListBox();
             this.grpQuizType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.stpMaxOptr)).BeginInit();
@@ -122,6 +122,7 @@
             this.cBoxCQuizAllowBrack.TabIndex = 26;
             this.cBoxCQuizAllowBrack.Text = "允许括号";
             this.cBoxCQuizAllowBrack.UseVisualStyleBackColor = true;
+            this.cBoxCQuizAllowBrack.CheckedChanged += new System.EventHandler(this.cBoxCQuizAllowBrack_CheckedChanged);
             // 
             // labPromptAllowType
             // 
@@ -142,6 +143,7 @@
             this.cBoxCQuizDiv.TabIndex = 24;
             this.cBoxCQuizDiv.Text = "除法";
             this.cBoxCQuizDiv.UseVisualStyleBackColor = true;
+            this.cBoxCQuizDiv.CheckedChanged += new System.EventHandler(this.cBoxCQuizDiv_CheckedChanged);
             // 
             // cBoxCQuizMul
             // 
@@ -153,6 +155,7 @@
             this.cBoxCQuizMul.TabIndex = 22;
             this.cBoxCQuizMul.Text = "乘法";
             this.cBoxCQuizMul.UseVisualStyleBackColor = true;
+            this.cBoxCQuizMul.CheckedChanged += new System.EventHandler(this.cBoxCQuizMul_CheckedChanged);
             // 
             // cBoxCQuizAdd
             // 
@@ -164,6 +167,7 @@
             this.cBoxCQuizAdd.TabIndex = 18;
             this.cBoxCQuizAdd.Text = "加法";
             this.cBoxCQuizAdd.UseVisualStyleBackColor = true;
+            this.cBoxCQuizAdd.CheckedChanged += new System.EventHandler(this.cBoxCQuizAdd_CheckedChanged);
             // 
             // cBoxCQuizSub
             // 
@@ -175,6 +179,7 @@
             this.cBoxCQuizSub.TabIndex = 19;
             this.cBoxCQuizSub.Text = "减法";
             this.cBoxCQuizSub.UseVisualStyleBackColor = true;
+            this.cBoxCQuizSub.CheckedChanged += new System.EventHandler(this.cBoxCQuizSub_CheckedChanged);
             // 
             // labPromptCQuizNum
             // 
@@ -231,6 +236,7 @@
             0,
             0,
             0});
+            this.stpCQuizNum.ValueChanged += new System.EventHandler(this.stpCQuizNum_ValueChanged);
             // 
             // labPromptMaxOptr
             // 
@@ -275,6 +281,7 @@
             0,
             0,
             0});
+            this.stpQDiv.ValueChanged += new System.EventHandler(this.stpQDiv_ValueChanged);
             // 
             // stpQMul
             // 
@@ -298,6 +305,7 @@
             0,
             0,
             0});
+            this.stpQMul.ValueChanged += new System.EventHandler(this.stpQMul_ValueChanged);
             // 
             // stpQSub
             // 
@@ -321,7 +329,7 @@
             0,
             0,
             0});
-            this.stpQSub.ValueChanged += new System.EventHandler(this.stpQAddSub_ValueChanged);
+            this.stpQSub.ValueChanged += new System.EventHandler(this.stpQSub_ValueChanged);
             // 
             // stpQAdd
             // 
@@ -345,6 +353,7 @@
             0,
             0,
             0});
+            this.stpQAdd.ValueChanged += new System.EventHandler(this.stpQAdd_ValueChanged);
             // 
             // cBoxQTypeDiv
             // 
@@ -401,7 +410,7 @@
             // stpMaxPrecision
             // 
             this.stpMaxPrecision.Location = new System.Drawing.Point(97, 24);
-            this.stpMaxPrecision.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.stpMaxPrecision.Margin = new System.Windows.Forms.Padding(4);
             this.stpMaxPrecision.Maximum = new decimal(new int[] {
             6,
             0,
@@ -420,6 +429,7 @@
             0,
             0,
             0});
+            this.stpMaxPrecision.ValueChanged += new System.EventHandler(this.stpMaxPrecision_ValueChanged);
             // 
             // label1
             // 
@@ -461,15 +471,16 @@
             this.cBoxAllowFrac.UseVisualStyleBackColor = true;
             this.cBoxAllowFrac.CheckedChanged += new System.EventHandler(this.cBoxAllowFrac_CheckedChanged);
             // 
-            // button1
+            // btnGenerate
             // 
-            this.button1.Location = new System.Drawing.Point(252, 320);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(89, 38);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "生成";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnGenerate.Location = new System.Drawing.Point(252, 320);
+            this.btnGenerate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnGenerate.Name = "btnGenerate";
+            this.btnGenerate.Size = new System.Drawing.Size(89, 38);
+            this.btnGenerate.TabIndex = 6;
+            this.btnGenerate.Text = "生成";
+            this.btnGenerate.UseVisualStyleBackColor = true;
+            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
             // btnClear
             // 
@@ -482,25 +493,25 @@
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
-            // button3
+            // btnCGenerate
             // 
-            this.button3.Location = new System.Drawing.Point(252, 362);
-            this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(89, 38);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "继续生成";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnCGenerate.Location = new System.Drawing.Point(252, 362);
+            this.btnCGenerate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnCGenerate.Name = "btnCGenerate";
+            this.btnCGenerate.Size = new System.Drawing.Size(89, 38);
+            this.btnCGenerate.TabIndex = 8;
+            this.btnCGenerate.Text = "继续生成";
+            this.btnCGenerate.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // btnSave
             // 
-            this.button4.Location = new System.Drawing.Point(347, 320);
-            this.button4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(89, 38);
-            this.button4.TabIndex = 9;
-            this.button4.Text = "保存";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnSave.Location = new System.Drawing.Point(347, 320);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(89, 38);
+            this.btnSave.TabIndex = 9;
+            this.btnSave.Text = "保存";
+            this.btnSave.UseVisualStyleBackColor = true;
             // 
             // lBoxQuizDisp
             // 
@@ -511,6 +522,7 @@
             this.lBoxQuizDisp.Name = "lBoxQuizDisp";
             this.lBoxQuizDisp.Size = new System.Drawing.Size(536, 274);
             this.lBoxQuizDisp.TabIndex = 17;
+            this.lBoxQuizDisp.SelectedIndexChanged += new System.EventHandler(this.lBoxQuizDisp_SelectedIndexChanged);
             // 
             // FrmQuizGen
             // 
@@ -518,10 +530,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.lBoxQuizDisp);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.btnCGenerate);
             this.Controls.Add(this.btnClear);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnGenerate);
             this.Controls.Add(this.grpQuizOption);
             this.Controls.Add(this.grpQuizType);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -569,10 +581,10 @@
         private System.Windows.Forms.NumericUpDown stpCQuizNum;
         private System.Windows.Forms.Label labPromptMaxOptr;
         private System.Windows.Forms.CheckBox cBoxAllowCplx;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnGenerate;
         private System.Windows.Forms.Button btnClear;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnCGenerate;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ListBox lBoxQuizDisp;
         private System.Windows.Forms.NumericUpDown stpMaxPrecision;
     }

@@ -49,7 +49,7 @@ namespace Expression
         {
             expr = new Expression();
         }
-        public void Generate(byte enabledOper=0x0f,uint maxOperand=2,bool allowDecimal=false,bool allowNeg=false,int decdig=0,bool allowBrack=false,double maxValue=1.0)
+        public void Generate(byte enabledOper=0x0f,int maxOperand=2,bool allowDecimal=false,bool allowNeg=false,int decdig=0,bool allowBrack=false,double maxValue=1.0)
         {
             Random r = new Random();
             AtomicExpr[] arryAexp = new AtomicExpr[maxOperand];

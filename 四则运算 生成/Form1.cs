@@ -51,11 +51,6 @@ namespace 四则运算_生成
             qConfig.subcount = decimal.ToInt32((sender as NumericUpDown).Value);
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnClear_Click(object sender, EventArgs e)
         {
             lBoxQuizDisp.Items.Clear();
@@ -75,21 +70,57 @@ namespace 四则运算_生成
         private void cBoxQTypeAdd_CheckedChanged(object sender, EventArgs e)
         {
             stpQAdd.Enabled = cBoxQTypeAdd.Checked && cBoxQTypeAdd.Enabled;
+            if ((sender as CheckBox).Checked)
+            {
+                qConfig.eBuilder.Allow(ExprOprt.ADD);
+            }
+            else
+            {
+                qConfig.eBuilder.Disallow(ExprOprt.ADD);
+            }
+            stpQAdd_ValueChanged(stpQAdd, new EventArgs());
         }
 
         private void cBoxQTypeSub_CheckedChanged(object sender, EventArgs e)
         {
             stpQSub.Enabled = cBoxQTypeSub.Checked && cBoxQTypeSub.Enabled;
+            if ((sender as CheckBox).Checked)
+            {
+                qConfig.eBuilder.Allow(ExprOprt.SUB);
+            }
+            else
+            {
+                qConfig.eBuilder.Disallow(ExprOprt.SUB);
+            }
+            stpQSub_ValueChanged(stpQSub, new EventArgs());
         }
 
         private void cBoxQTypeMul_CheckedChanged(object sender, EventArgs e)
         {
             stpQMul.Enabled = cBoxQTypeMul.Checked && cBoxQTypeMul.Enabled;
+            if ((sender as CheckBox).Checked)
+            {
+                qConfig.eBuilder.Allow(ExprOprt.MUL);
+            }
+            else
+            {
+                qConfig.eBuilder.Disallow(ExprOprt.MUL);
+            }
+            stpQMul_ValueChanged(stpQMul, new EventArgs());
         }
 
         private void cBoxQTypeDiv_CheckedChanged(object sender, EventArgs e)
         {
             stpQDiv.Enabled = cBoxQTypeDiv.Checked && cBoxQTypeDiv.Enabled;
+            if ((sender as CheckBox).Checked)
+            {
+                qConfig.eBuilder.Allow(ExprOprt.DIV);
+            }
+            else
+            {
+                qConfig.eBuilder.Disallow(ExprOprt.DIV);
+            }
+            stpQDiv_ValueChanged(stpQDiv, new EventArgs());
         }
 
         private void stpMaxOptr_ValueChanged(object sender, EventArgs e)
@@ -102,6 +133,24 @@ namespace 四则运算_生成
             UpdateCplxSettings();
             UpdateStepper();
             qConfig.eBuilder.allowCplxExpr = (sender as CheckBox).Checked;
+            if(qConfig.eBuilder.allowCplxExpr)
+            {
+                cBoxCQuizAdd_CheckedChanged(cBoxCQuizAdd, new EventArgs());
+                cBoxCQuizSub_CheckedChanged(cBoxCQuizSub, new EventArgs());
+                cBoxCQuizMul_CheckedChanged(cBoxCQuizMul, new EventArgs());
+                cBoxCQuizDiv_CheckedChanged(cBoxCQuizDiv, new EventArgs());
+            }
+            else
+            {
+                cBoxQTypeAdd_CheckedChanged(cBoxQTypeAdd, new EventArgs());
+                cBoxQTypeSub_CheckedChanged(cBoxQTypeSub, new EventArgs());
+                cBoxQTypeMul_CheckedChanged(cBoxQTypeMul, new EventArgs());
+                cBoxQTypeDiv_CheckedChanged(cBoxQTypeDiv, new EventArgs());
+                qConfig.addcount = decimal.ToInt32(stpQAdd.Value);
+                qConfig.subcount = decimal.ToInt32(stpQSub.Value);
+                qConfig.mulcount = decimal.ToInt32(stpQMul.Value);
+                qConfig.divcount = decimal.ToInt32(stpQDiv.Value);
+            }
         }
 
         private void UpdateCplxSettings()
@@ -110,6 +159,7 @@ namespace 四则运算_生成
             cBoxQTypeSub.Enabled = !cBoxAllowCplx.Checked;
             cBoxQTypeMul.Enabled = !cBoxAllowCplx.Checked;
             cBoxQTypeDiv.Enabled = !cBoxAllowCplx.Checked;
+
             labPromptCQuizNum.Enabled = cBoxAllowCplx.Checked;
             labPromptMaxOptr.Enabled = cBoxAllowCplx.Checked;
             labPromptAllowType.Enabled = cBoxAllowCplx.Checked;
@@ -238,44 +288,106 @@ namespace 四则运算_生成
             {
                 throw new NoOprtFoundException();
             }
-            for (var i = 0; i < qConfig.Count; i++)
+            if(qConfig.eBuilder.allowCplxExpr)
             {
-                try
+                for (var i = 0; i < qConfig.Count; i++)
                 {
-                    Expr egen = qConfig.eBuilder.Generate(r);
-                    if (egen == null)
+                    try
+                    {
+                        Expr egen = qConfig.eBuilder.Generate(r);
+                        if (egen == null)
+                        {
+                            i--;
+                            continue;
+                        }
+                        questions.Add(egen);
+                    }
+                    catch (Exception)
                     {
                         i--;
                         continue;
                     }
-                    questions.Add(egen);
-                    if (qConfig.eBuilder.allowCplxExpr)
+                    //questions.Add(egen);
+                }
+
+            }
+            else
+            {
+                int i;
+                for (i = 0; i < qConfig.addcount;i++)
+                {
+                    try
                     {
-                        switch (egen.oprt)
+                        Expr egen = qConfig.eBuilder.BinaryGenerate(ExprOprt.ADD,r);
+                        if(egen == null)
                         {
-                            case ExprOprt.ADD:
-                                qConfig.addcount++;
-                                break;
-                            case ExprOprt.SUB:
-                                qConfig.subcount++;
-                                break;
-                            case ExprOprt.MUL:
-                                qConfig.mulcount++;
-                                break;
-                            case ExprOprt.DIV:
-                                qConfig.divcount++;
-                                break;
-                            default:
-                                throw new InvalidExprOprtParseException(egen.oprt);
+                            i--;
+                            continue;
                         }
+                        questions.Add(egen);
+                    }
+                    catch(Exception e)
+                    {
+                        i--;
+                        continue;
                     }
                 }
-                catch (Exception)
+                for (i = 0; i < qConfig.subcount; i++)
                 {
-                    i--;
-                    continue;
+                    try
+                    {
+                        Expr egen = qConfig.eBuilder.BinaryGenerate(ExprOprt.SUB,r);
+                        if (egen == null)
+                        {
+                            i--;
+                            continue;
+                        }
+                        questions.Add(egen);
+                    }
+                    catch (Exception e)
+                    {
+                        i--;
+                        continue;
+                    }
                 }
-                //questions.Add(egen);
+                for (i = 0; i < qConfig.mulcount; i++)
+                {
+                    try
+                    {
+                        Expr egen = qConfig.eBuilder.BinaryGenerate(ExprOprt.MUL,r);
+                        if (egen == null)
+                        {
+                            i--;
+                            continue;
+                        }
+                        questions.Add(egen);
+                    }
+                    catch (Exception e)
+                    {
+                        i--;
+                        continue;
+                    }
+                }
+                for (i = 0; i < qConfig.divcount; i++)
+                {
+                    try
+                    {
+                        Expr egen = qConfig.eBuilder.BinaryGenerate(ExprOprt.DIV,r);
+                        if (egen == null)
+                        {
+                            i--;
+                            continue;
+                        }
+                        questions.Add(egen);
+                    }
+                    catch (Exception e)
+                    {
+                        i--;
+                        continue;
+                    }
+                }
+
+
             }
         }
     }

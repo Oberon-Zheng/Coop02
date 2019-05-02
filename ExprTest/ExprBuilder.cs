@@ -337,7 +337,7 @@ namespace MyExpression
                     dRand1 = (dRand1 - 0.5) * 2;
             }
             dRand0 *= maxValue;
-            dRand0 *= maxValue;
+            dRand1 *= maxValue;
             if (!allowDec)
             {
                 dRand0 = Math.Truncate(dRand0);

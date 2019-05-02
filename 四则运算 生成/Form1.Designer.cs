@@ -56,9 +56,9 @@
             this.cBoxAllowFrac = new System.Windows.Forms.CheckBox();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
-            this.btnCGenerate = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.lBoxQuizDisp = new System.Windows.Forms.ListBox();
+            this.sfdQuestionstxt = new System.Windows.Forms.SaveFileDialog();
             this.grpQuizType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.stpMaxOptr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stpCQuizNum)).BeginInit();
@@ -74,10 +74,10 @@
             // cBoxQTypeAdd
             // 
             this.cBoxQTypeAdd.AutoSize = true;
-            this.cBoxQTypeAdd.Location = new System.Drawing.Point(5, 19);
-            this.cBoxQTypeAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxQTypeAdd.Location = new System.Drawing.Point(7, 24);
+            this.cBoxQTypeAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxQTypeAdd.Name = "cBoxQTypeAdd";
-            this.cBoxQTypeAdd.Size = new System.Drawing.Size(48, 16);
+            this.cBoxQTypeAdd.Size = new System.Drawing.Size(59, 19);
             this.cBoxQTypeAdd.TabIndex = 3;
             this.cBoxQTypeAdd.Text = "加法";
             this.cBoxQTypeAdd.UseVisualStyleBackColor = true;
@@ -104,11 +104,11 @@
             this.grpQuizType.Controls.Add(this.cBoxQTypeMul);
             this.grpQuizType.Controls.Add(this.cBoxQTypeSub);
             this.grpQuizType.Controls.Add(this.cBoxQTypeAdd);
-            this.grpQuizType.Location = new System.Drawing.Point(9, 10);
-            this.grpQuizType.Margin = new System.Windows.Forms.Padding(2);
+            this.grpQuizType.Location = new System.Drawing.Point(12, 12);
+            this.grpQuizType.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.grpQuizType.Name = "grpQuizType";
-            this.grpQuizType.Padding = new System.Windows.Forms.Padding(2);
-            this.grpQuizType.Size = new System.Drawing.Size(160, 229);
+            this.grpQuizType.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.grpQuizType.Size = new System.Drawing.Size(213, 286);
             this.grpQuizType.TabIndex = 4;
             this.grpQuizType.TabStop = false;
             this.grpQuizType.Text = "题目类型";
@@ -116,10 +116,10 @@
             // cBoxCQuizAllowBrack
             // 
             this.cBoxCQuizAllowBrack.AutoSize = true;
-            this.cBoxCQuizAllowBrack.Location = new System.Drawing.Point(62, 206);
-            this.cBoxCQuizAllowBrack.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxCQuizAllowBrack.Location = new System.Drawing.Point(83, 258);
+            this.cBoxCQuizAllowBrack.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxCQuizAllowBrack.Name = "cBoxCQuizAllowBrack";
-            this.cBoxCQuizAllowBrack.Size = new System.Drawing.Size(72, 16);
+            this.cBoxCQuizAllowBrack.Size = new System.Drawing.Size(89, 19);
             this.cBoxCQuizAllowBrack.TabIndex = 26;
             this.cBoxCQuizAllowBrack.Text = "允许括号";
             this.cBoxCQuizAllowBrack.UseVisualStyleBackColor = true;
@@ -128,20 +128,19 @@
             // labPromptAllowType
             // 
             this.labPromptAllowType.AutoSize = true;
-            this.labPromptAllowType.Location = new System.Drawing.Point(30, 166);
-            this.labPromptAllowType.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labPromptAllowType.Location = new System.Drawing.Point(40, 208);
             this.labPromptAllowType.Name = "labPromptAllowType";
-            this.labPromptAllowType.Size = new System.Drawing.Size(29, 12);
+            this.labPromptAllowType.Size = new System.Drawing.Size(37, 15);
             this.labPromptAllowType.TabIndex = 25;
             this.labPromptAllowType.Text = "允许";
             // 
             // cBoxCQuizDiv
             // 
             this.cBoxCQuizDiv.AutoSize = true;
-            this.cBoxCQuizDiv.Location = new System.Drawing.Point(111, 186);
-            this.cBoxCQuizDiv.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxCQuizDiv.Location = new System.Drawing.Point(148, 232);
+            this.cBoxCQuizDiv.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxCQuizDiv.Name = "cBoxCQuizDiv";
-            this.cBoxCQuizDiv.Size = new System.Drawing.Size(48, 16);
+            this.cBoxCQuizDiv.Size = new System.Drawing.Size(59, 19);
             this.cBoxCQuizDiv.TabIndex = 24;
             this.cBoxCQuizDiv.Text = "除法";
             this.cBoxCQuizDiv.UseVisualStyleBackColor = true;
@@ -150,10 +149,10 @@
             // cBoxCQuizMul
             // 
             this.cBoxCQuizMul.AutoSize = true;
-            this.cBoxCQuizMul.Location = new System.Drawing.Point(62, 186);
-            this.cBoxCQuizMul.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxCQuizMul.Location = new System.Drawing.Point(83, 232);
+            this.cBoxCQuizMul.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxCQuizMul.Name = "cBoxCQuizMul";
-            this.cBoxCQuizMul.Size = new System.Drawing.Size(48, 16);
+            this.cBoxCQuizMul.Size = new System.Drawing.Size(59, 19);
             this.cBoxCQuizMul.TabIndex = 22;
             this.cBoxCQuizMul.Text = "乘法";
             this.cBoxCQuizMul.UseVisualStyleBackColor = true;
@@ -162,10 +161,10 @@
             // cBoxCQuizAdd
             // 
             this.cBoxCQuizAdd.AutoSize = true;
-            this.cBoxCQuizAdd.Location = new System.Drawing.Point(62, 166);
-            this.cBoxCQuizAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxCQuizAdd.Location = new System.Drawing.Point(83, 208);
+            this.cBoxCQuizAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxCQuizAdd.Name = "cBoxCQuizAdd";
-            this.cBoxCQuizAdd.Size = new System.Drawing.Size(48, 16);
+            this.cBoxCQuizAdd.Size = new System.Drawing.Size(59, 19);
             this.cBoxCQuizAdd.TabIndex = 18;
             this.cBoxCQuizAdd.Text = "加法";
             this.cBoxCQuizAdd.UseVisualStyleBackColor = true;
@@ -174,10 +173,10 @@
             // cBoxCQuizSub
             // 
             this.cBoxCQuizSub.AutoSize = true;
-            this.cBoxCQuizSub.Location = new System.Drawing.Point(111, 166);
-            this.cBoxCQuizSub.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxCQuizSub.Location = new System.Drawing.Point(148, 208);
+            this.cBoxCQuizSub.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxCQuizSub.Name = "cBoxCQuizSub";
-            this.cBoxCQuizSub.Size = new System.Drawing.Size(48, 16);
+            this.cBoxCQuizSub.Size = new System.Drawing.Size(59, 19);
             this.cBoxCQuizSub.TabIndex = 19;
             this.cBoxCQuizSub.Text = "减法";
             this.cBoxCQuizSub.UseVisualStyleBackColor = true;
@@ -186,17 +185,16 @@
             // labPromptCQuizNum
             // 
             this.labPromptCQuizNum.AutoSize = true;
-            this.labPromptCQuizNum.Location = new System.Drawing.Point(4, 118);
-            this.labPromptCQuizNum.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labPromptCQuizNum.Location = new System.Drawing.Point(5, 148);
             this.labPromptCQuizNum.Name = "labPromptCQuizNum";
-            this.labPromptCQuizNum.Size = new System.Drawing.Size(53, 12);
+            this.labPromptCQuizNum.Size = new System.Drawing.Size(67, 15);
             this.labPromptCQuizNum.TabIndex = 23;
             this.labPromptCQuizNum.Text = "题目数量";
             // 
             // stpMaxOptr
             // 
-            this.stpMaxOptr.Location = new System.Drawing.Point(73, 140);
-            this.stpMaxOptr.Margin = new System.Windows.Forms.Padding(2);
+            this.stpMaxOptr.Location = new System.Drawing.Point(97, 175);
+            this.stpMaxOptr.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.stpMaxOptr.Maximum = new decimal(new int[] {
             8,
             0,
@@ -208,7 +206,7 @@
             0,
             0});
             this.stpMaxOptr.Name = "stpMaxOptr";
-            this.stpMaxOptr.Size = new System.Drawing.Size(72, 21);
+            this.stpMaxOptr.Size = new System.Drawing.Size(96, 25);
             this.stpMaxOptr.TabIndex = 20;
             this.stpMaxOptr.Value = new decimal(new int[] {
             3,
@@ -219,8 +217,8 @@
             // 
             // stpCQuizNum
             // 
-            this.stpCQuizNum.Location = new System.Drawing.Point(73, 117);
-            this.stpCQuizNum.Margin = new System.Windows.Forms.Padding(2);
+            this.stpCQuizNum.Location = new System.Drawing.Point(97, 146);
+            this.stpCQuizNum.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.stpCQuizNum.Maximum = new decimal(new int[] {
             50,
             0,
@@ -232,7 +230,7 @@
             0,
             0});
             this.stpCQuizNum.Name = "stpCQuizNum";
-            this.stpCQuizNum.Size = new System.Drawing.Size(72, 21);
+            this.stpCQuizNum.Size = new System.Drawing.Size(96, 25);
             this.stpCQuizNum.TabIndex = 21;
             this.stpCQuizNum.Value = new decimal(new int[] {
             1,
@@ -244,20 +242,19 @@
             // labPromptMaxOptr
             // 
             this.labPromptMaxOptr.AutoSize = true;
-            this.labPromptMaxOptr.Location = new System.Drawing.Point(4, 142);
-            this.labPromptMaxOptr.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labPromptMaxOptr.Location = new System.Drawing.Point(5, 178);
             this.labPromptMaxOptr.Name = "labPromptMaxOptr";
-            this.labPromptMaxOptr.Size = new System.Drawing.Size(65, 12);
+            this.labPromptMaxOptr.Size = new System.Drawing.Size(82, 15);
             this.labPromptMaxOptr.TabIndex = 17;
             this.labPromptMaxOptr.Text = "最大运算数";
             // 
             // cBoxAllowCplx
             // 
             this.cBoxAllowCplx.AutoSize = true;
-            this.cBoxAllowCplx.Location = new System.Drawing.Point(4, 99);
-            this.cBoxAllowCplx.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxAllowCplx.Location = new System.Drawing.Point(5, 124);
+            this.cBoxAllowCplx.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxAllowCplx.Name = "cBoxAllowCplx";
-            this.cBoxAllowCplx.Size = new System.Drawing.Size(72, 16);
+            this.cBoxAllowCplx.Size = new System.Drawing.Size(89, 19);
             this.cBoxAllowCplx.TabIndex = 16;
             this.cBoxAllowCplx.Text = "复合运算";
             this.cBoxAllowCplx.UseVisualStyleBackColor = true;
@@ -265,8 +262,8 @@
             // 
             // stpQDiv
             // 
-            this.stpQDiv.Location = new System.Drawing.Point(55, 74);
-            this.stpQDiv.Margin = new System.Windows.Forms.Padding(2);
+            this.stpQDiv.Location = new System.Drawing.Point(73, 92);
+            this.stpQDiv.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.stpQDiv.Maximum = new decimal(new int[] {
             50,
             0,
@@ -278,7 +275,7 @@
             0,
             0});
             this.stpQDiv.Name = "stpQDiv";
-            this.stpQDiv.Size = new System.Drawing.Size(90, 21);
+            this.stpQDiv.Size = new System.Drawing.Size(120, 25);
             this.stpQDiv.TabIndex = 10;
             this.stpQDiv.Value = new decimal(new int[] {
             1,
@@ -289,8 +286,8 @@
             // 
             // stpQMul
             // 
-            this.stpQMul.Location = new System.Drawing.Point(55, 54);
-            this.stpQMul.Margin = new System.Windows.Forms.Padding(2);
+            this.stpQMul.Location = new System.Drawing.Point(73, 68);
+            this.stpQMul.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.stpQMul.Maximum = new decimal(new int[] {
             50,
             0,
@@ -302,7 +299,7 @@
             0,
             0});
             this.stpQMul.Name = "stpQMul";
-            this.stpQMul.Size = new System.Drawing.Size(90, 21);
+            this.stpQMul.Size = new System.Drawing.Size(120, 25);
             this.stpQMul.TabIndex = 9;
             this.stpQMul.Value = new decimal(new int[] {
             1,
@@ -313,8 +310,8 @@
             // 
             // stpQSub
             // 
-            this.stpQSub.Location = new System.Drawing.Point(55, 34);
-            this.stpQSub.Margin = new System.Windows.Forms.Padding(2);
+            this.stpQSub.Location = new System.Drawing.Point(73, 42);
+            this.stpQSub.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.stpQSub.Maximum = new decimal(new int[] {
             50,
             0,
@@ -326,7 +323,7 @@
             0,
             0});
             this.stpQSub.Name = "stpQSub";
-            this.stpQSub.Size = new System.Drawing.Size(90, 21);
+            this.stpQSub.Size = new System.Drawing.Size(120, 25);
             this.stpQSub.TabIndex = 8;
             this.stpQSub.Value = new decimal(new int[] {
             1,
@@ -337,8 +334,8 @@
             // 
             // stpQAdd
             // 
-            this.stpQAdd.Location = new System.Drawing.Point(55, 14);
-            this.stpQAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.stpQAdd.Location = new System.Drawing.Point(73, 18);
+            this.stpQAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.stpQAdd.Maximum = new decimal(new int[] {
             50,
             0,
@@ -350,7 +347,7 @@
             0,
             0});
             this.stpQAdd.Name = "stpQAdd";
-            this.stpQAdd.Size = new System.Drawing.Size(90, 21);
+            this.stpQAdd.Size = new System.Drawing.Size(120, 25);
             this.stpQAdd.TabIndex = 7;
             this.stpQAdd.Value = new decimal(new int[] {
             1,
@@ -362,10 +359,10 @@
             // cBoxQTypeDiv
             // 
             this.cBoxQTypeDiv.AutoSize = true;
-            this.cBoxQTypeDiv.Location = new System.Drawing.Point(4, 79);
-            this.cBoxQTypeDiv.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxQTypeDiv.Location = new System.Drawing.Point(5, 99);
+            this.cBoxQTypeDiv.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxQTypeDiv.Name = "cBoxQTypeDiv";
-            this.cBoxQTypeDiv.Size = new System.Drawing.Size(48, 16);
+            this.cBoxQTypeDiv.Size = new System.Drawing.Size(59, 19);
             this.cBoxQTypeDiv.TabIndex = 6;
             this.cBoxQTypeDiv.Text = "除法";
             this.cBoxQTypeDiv.UseVisualStyleBackColor = true;
@@ -374,10 +371,10 @@
             // cBoxQTypeMul
             // 
             this.cBoxQTypeMul.AutoSize = true;
-            this.cBoxQTypeMul.Location = new System.Drawing.Point(4, 59);
-            this.cBoxQTypeMul.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxQTypeMul.Location = new System.Drawing.Point(5, 74);
+            this.cBoxQTypeMul.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxQTypeMul.Name = "cBoxQTypeMul";
-            this.cBoxQTypeMul.Size = new System.Drawing.Size(48, 16);
+            this.cBoxQTypeMul.Size = new System.Drawing.Size(59, 19);
             this.cBoxQTypeMul.TabIndex = 5;
             this.cBoxQTypeMul.Text = "乘法";
             this.cBoxQTypeMul.UseVisualStyleBackColor = true;
@@ -386,10 +383,10 @@
             // cBoxQTypeSub
             // 
             this.cBoxQTypeSub.AutoSize = true;
-            this.cBoxQTypeSub.Location = new System.Drawing.Point(5, 39);
-            this.cBoxQTypeSub.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxQTypeSub.Location = new System.Drawing.Point(7, 49);
+            this.cBoxQTypeSub.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxQTypeSub.Name = "cBoxQTypeSub";
-            this.cBoxQTypeSub.Size = new System.Drawing.Size(48, 16);
+            this.cBoxQTypeSub.Size = new System.Drawing.Size(59, 19);
             this.cBoxQTypeSub.TabIndex = 4;
             this.cBoxQTypeSub.Text = "减法";
             this.cBoxQTypeSub.UseVisualStyleBackColor = true;
@@ -402,20 +399,21 @@
             this.grpQuizOption.Controls.Add(this.label1);
             this.grpQuizOption.Controls.Add(this.cBoxAllowNeg);
             this.grpQuizOption.Controls.Add(this.cBoxAllowFrac);
-            this.grpQuizOption.Location = new System.Drawing.Point(9, 243);
-            this.grpQuizOption.Margin = new System.Windows.Forms.Padding(2);
+            this.grpQuizOption.Location = new System.Drawing.Point(12, 304);
+            this.grpQuizOption.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.grpQuizOption.Name = "grpQuizOption";
-            this.grpQuizOption.Padding = new System.Windows.Forms.Padding(2);
-            this.grpQuizOption.Size = new System.Drawing.Size(160, 90);
+            this.grpQuizOption.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.grpQuizOption.Size = new System.Drawing.Size(213, 112);
             this.grpQuizOption.TabIndex = 5;
             this.grpQuizOption.TabStop = false;
             this.grpQuizOption.Text = "题目约束";
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(73, 60);
+            this.numericUpDown1.Location = new System.Drawing.Point(97, 75);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(82, 21);
+            this.numericUpDown1.Size = new System.Drawing.Size(109, 25);
             this.numericUpDown1.TabIndex = 5;
             this.numericUpDown1.Value = new decimal(new int[] {
             100,
@@ -425,7 +423,8 @@
             // 
             // stpMaxPrecision
             // 
-            this.stpMaxPrecision.Location = new System.Drawing.Point(74, 19);
+            this.stpMaxPrecision.Location = new System.Drawing.Point(99, 24);
+            this.stpMaxPrecision.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.stpMaxPrecision.Maximum = new decimal(new int[] {
             6,
             0,
@@ -437,7 +436,7 @@
             0,
             0});
             this.stpMaxPrecision.Name = "stpMaxPrecision";
-            this.stpMaxPrecision.Size = new System.Drawing.Size(81, 21);
+            this.stpMaxPrecision.Size = new System.Drawing.Size(108, 25);
             this.stpMaxPrecision.TabIndex = 4;
             this.stpMaxPrecision.Value = new decimal(new int[] {
             1,
@@ -449,20 +448,19 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 62);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(5, 78);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.Size = new System.Drawing.Size(82, 15);
             this.label1.TabIndex = 3;
             this.label1.Text = "上限运算值";
             // 
             // cBoxAllowNeg
             // 
             this.cBoxAllowNeg.AutoSize = true;
-            this.cBoxAllowNeg.Location = new System.Drawing.Point(4, 40);
-            this.cBoxAllowNeg.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxAllowNeg.Location = new System.Drawing.Point(5, 50);
+            this.cBoxAllowNeg.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxAllowNeg.Name = "cBoxAllowNeg";
-            this.cBoxAllowNeg.Size = new System.Drawing.Size(72, 16);
+            this.cBoxAllowNeg.Size = new System.Drawing.Size(89, 19);
             this.cBoxAllowNeg.TabIndex = 1;
             this.cBoxAllowNeg.Text = "允许负数";
             this.cBoxAllowNeg.UseVisualStyleBackColor = true;
@@ -470,10 +468,10 @@
             // cBoxAllowFrac
             // 
             this.cBoxAllowFrac.AutoSize = true;
-            this.cBoxAllowFrac.Location = new System.Drawing.Point(4, 20);
-            this.cBoxAllowFrac.Margin = new System.Windows.Forms.Padding(2);
+            this.cBoxAllowFrac.Location = new System.Drawing.Point(5, 25);
+            this.cBoxAllowFrac.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cBoxAllowFrac.Name = "cBoxAllowFrac";
-            this.cBoxAllowFrac.Size = new System.Drawing.Size(72, 16);
+            this.cBoxAllowFrac.Size = new System.Drawing.Size(89, 19);
             this.cBoxAllowFrac.TabIndex = 0;
             this.cBoxAllowFrac.Text = "允许小数";
             this.cBoxAllowFrac.UseVisualStyleBackColor = true;
@@ -481,10 +479,10 @@
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(189, 256);
-            this.btnGenerate.Margin = new System.Windows.Forms.Padding(2);
+            this.btnGenerate.Location = new System.Drawing.Point(252, 320);
+            this.btnGenerate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(67, 30);
+            this.btnGenerate.Size = new System.Drawing.Size(89, 38);
             this.btnGenerate.TabIndex = 6;
             this.btnGenerate.Text = "生成";
             this.btnGenerate.UseVisualStyleBackColor = true;
@@ -492,59 +490,53 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(535, 256);
-            this.btnClear.Margin = new System.Windows.Forms.Padding(2);
+            this.btnClear.Location = new System.Drawing.Point(713, 320);
+            this.btnClear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(56, 30);
+            this.btnClear.Size = new System.Drawing.Size(75, 38);
             this.btnClear.TabIndex = 7;
             this.btnClear.Text = "清空";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
-            // btnCGenerate
-            // 
-            this.btnCGenerate.Location = new System.Drawing.Point(189, 290);
-            this.btnCGenerate.Margin = new System.Windows.Forms.Padding(2);
-            this.btnCGenerate.Name = "btnCGenerate";
-            this.btnCGenerate.Size = new System.Drawing.Size(67, 30);
-            this.btnCGenerate.TabIndex = 8;
-            this.btnCGenerate.Text = "继续生成";
-            this.btnCGenerate.UseVisualStyleBackColor = true;
-            // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(260, 256);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSave.Location = new System.Drawing.Point(347, 320);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(67, 30);
+            this.btnSave.Size = new System.Drawing.Size(89, 38);
             this.btnSave.TabIndex = 9;
             this.btnSave.Text = "保存";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // lBoxQuizDisp
             // 
             this.lBoxQuizDisp.FormattingEnabled = true;
-            this.lBoxQuizDisp.ItemHeight = 12;
-            this.lBoxQuizDisp.Location = new System.Drawing.Point(189, 24);
-            this.lBoxQuizDisp.Margin = new System.Windows.Forms.Padding(2);
+            this.lBoxQuizDisp.ItemHeight = 15;
+            this.lBoxQuizDisp.Location = new System.Drawing.Point(252, 30);
+            this.lBoxQuizDisp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lBoxQuizDisp.Name = "lBoxQuizDisp";
-            this.lBoxQuizDisp.Size = new System.Drawing.Size(403, 220);
+            this.lBoxQuizDisp.Size = new System.Drawing.Size(536, 274);
             this.lBoxQuizDisp.TabIndex = 17;
             this.lBoxQuizDisp.SelectedIndexChanged += new System.EventHandler(this.lBoxQuizDisp_SelectedIndexChanged);
             // 
+            // sfdQuestionstxt
+            // 
+            this.sfdQuestionstxt.FileOk += new System.ComponentModel.CancelEventHandler(this.sfdQuestionstxt_FileOk);
+            // 
             // FrmQuizGen
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 360);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.lBoxQuizDisp);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.btnCGenerate);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnGenerate);
             this.Controls.Add(this.grpQuizOption);
             this.Controls.Add(this.grpQuizType);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FrmQuizGen";
             this.Text = "四则运算生成器";
             this.Activated += new System.EventHandler(this.FrmQuizGen_Activated);
@@ -591,11 +583,11 @@
         private System.Windows.Forms.CheckBox cBoxAllowCplx;
         private System.Windows.Forms.Button btnGenerate;
         private System.Windows.Forms.Button btnClear;
-        private System.Windows.Forms.Button btnCGenerate;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ListBox lBoxQuizDisp;
         private System.Windows.Forms.NumericUpDown stpMaxPrecision;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.SaveFileDialog sfdQuestionstxt;
     }
 }
 

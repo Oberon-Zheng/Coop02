@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MyExpression;
+using System.IO;
 
 namespace 四则运算_生成
 {
@@ -53,7 +54,12 @@ namespace 四则运算_生成
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            lBoxQuizDisp.Items.Clear();
+            questions.Clear();
+            BindingSource bs = new BindingSource();
+            bs.DataSource = questions;
+            lBoxQuizDisp.DataSource = bs;
+            lBoxQuizDisp.DisplayMember = "";
+
         }
 
         private void FrmQuizGen_Activated(object sender, EventArgs e)
@@ -183,6 +189,7 @@ namespace 四则运算_生成
         private void cBoxAllowFrac_CheckedChanged(object sender, EventArgs e)
         {
             stpMaxPrecision.Enabled = cBoxAllowFrac.Checked;
+            qConfig.eBuilder.allowDec = (sender as CheckBox).Checked;
         }
 
         private void stpCQuizNum_ValueChanged(object sender, EventArgs e)
@@ -279,6 +286,10 @@ namespace 四则运算_生成
             {
                 MessageBox.Show("未选定合适的运算符！");
             }
+            BindingSource bs = new BindingSource();
+            bs.DataSource = questions;
+            lBoxQuizDisp.DataSource = bs;
+            lBoxQuizDisp.DisplayMember = "";
             return;
         }
 
@@ -386,9 +397,41 @@ namespace 四则运算_生成
                         continue;
                     }
                 }
-
-
             }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            StreamWriter wstream;
+            sfdQuestionstxt.Filter = "文本文件 (*.txt)|*.txt";
+            sfdQuestionstxt.RestoreDirectory = true;
+            if(questions.Count > 0)
+            {
+                if (sfdQuestionstxt.ShowDialog() == DialogResult.OK)
+                {
+                    wstream = new StreamWriter(sfdQuestionstxt.FileName);
+                    foreach (var i in questions)
+                    {
+                        wstream.WriteLine(string.Format("{0}=",i));
+                    }
+                    wstream.Flush();
+                    wstream.Close();
+                    MessageBox.Show("保存成功");
+                }
+                else
+                {
+                    MessageBox.Show("保存取消");
+                }
+            }
+            else
+            {
+                MessageBox.Show("没有题目");
+            }
+        }
+
+        private void sfdQuestionstxt_FileOk(object sender, CancelEventArgs e)
+        {
+
         }
     }
 }

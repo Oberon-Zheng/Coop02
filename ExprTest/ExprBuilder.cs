@@ -313,12 +313,7 @@ namespace MyExpression
             }
             double dRand0 = r.NextDouble();
             double dRand1 = r.NextDouble();
-            while(oprt == ExprOprt.DIV && Math.Truncate(Math.Abs(dRand1)*maxValue)<double.Epsilon)
-            {
-                dRand1 = r.NextDouble();
-                if (allowNeg)
-                    dRand1 = (dRand1 - 0.5) * 2;
-            }
+            
             if (allowNeg)
             {
                 dRand0 -= 0.5;
@@ -335,11 +330,17 @@ namespace MyExpression
                     dRand1 = t;
                 }
             }
+            while (oprt == ExprOprt.DIV && Math.Truncate(Math.Abs(dRand1) * maxValue) < double.Epsilon)
+            {
+                dRand1 = r.NextDouble();
+                if (allowNeg)
+                    dRand1 = (dRand1 - 0.5) * 2;
+            }
             dRand0 *= maxValue;
             if (!allowDec)
             {
                 dRand0 = Math.Truncate(dRand0);
-                dRand1 = Math.Truncate(dRand0);
+                dRand1 = Math.Truncate(dRand1);
             }
             else
             {

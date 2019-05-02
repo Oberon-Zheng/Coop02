@@ -41,7 +41,7 @@ namespace MyExpression.Tests
             //ebuild.maxOpnd = 0;
             while(true)
             {
-                ebuild.Generate();
+                ebuild.BinaryGenerate(ExprOprt.DIV);
             }
             var i = e.ParseValue();
             Assert.Fail();

@@ -62,15 +62,22 @@ namespace MyExpression
             }
         }
 
-        private ExprOprt ChooseOprt(params ExprOprt[] oprts)
+        private ExprOprt ChooseOprt(Random r = null,params ExprOprt[] oprts)
         {
-            Random r = new Random();
+            var tick = DateTime.Now.Ticks;
+            if (r == null)
+            {
+                r = new Random();
+            }
             return oprts[r.Next(oprts.Length)];
         }
-        private ExprOprt ChooseOprt(HashSet<ExprOprt> oprtSet)
+        private ExprOprt ChooseOprt(HashSet<ExprOprt> oprtSet,Random r)
         {
             var oprts = new List<ExprOprt>(oprtSet);
-            Random r = new Random();
+            if (r == null)
+            {
+                r = new Random();
+            }
             return oprts[r.Next(oprts.Count)];
         }
 
@@ -82,14 +89,18 @@ namespace MyExpression
         /// <summary>
         ///  Generate a expression tree based on the constraints.
         /// </summary>
-        public Expr Generate()
+        public Expr Generate(Random r = null)
         {
             HashSet<ExprOprt> hsetOprt = new HashSet<ExprOprt>(Enum.GetValues(typeof(ExprOprt)) as IEnumerable<ExprOprt>);
             hsetOprt.Remove(ExprOprt.NIL);
+            if (r == null)
+            {
+                var tick = DateTime.Now.Ticks;
+                r = new Random((int)(tick & 0xffffffffL) | (int)(tick >> 32));
+            } 
             if (allowCplxExpr)
             {
                 subExprList.Clear();
-                Random r = new Random();
                 #region Random out atomic operands.
                 for (var i = 0; i < maxOpnd; i++)
                 {
@@ -211,7 +222,7 @@ namespace MyExpression
                     }
                     ecombine.expr0 = expr0;
                     ecombine.expr1 = expr1;
-                    ecombine.oprt = ChooseOprt(hsetOprt);
+                    ecombine.oprt = ChooseOprt(hsetOprt,r);
                     if (!allowBrack && !ecombine.IsNaturalOrder)
                     {
                         return null;
@@ -234,41 +245,38 @@ namespace MyExpression
             }
             else
             {
-                Random r = new Random();
-                #region Random out atomic operands.
-                
-                    double dRand = r.NextDouble();
-                    if (allowNeg)
-                    {
-                        dRand -= 0.5;
-                        dRand *= 2;
-                    }
-                    dRand *= maxValue;
-                    if (!allowDec)
-                    {
-                        dRand = Math.Truncate(dRand);
-                    }
-                    else
-                    {
-                        dRand = Math.Round(dRand, maxPrecision);
-                    }
-                    AtomExpr aexp0 = new AtomExpr(dRand);
-                    dRand = r.NextDouble();
-                    if (allowNeg)
-                    {
-                        dRand -= 0.5;
-                        dRand *= 2;
-                    }
-                    dRand *= maxValue;
-                    if (!allowDec)
-                    {
-                        dRand = Math.Truncate(dRand);
-                    }
-                    else
-                    {
-                        dRand = Math.Round(dRand, maxPrecision);
-                    }
-                    AtomExpr aexp1 = new AtomExpr(dRand);
+                double dRand = r.NextDouble();
+                if (allowNeg)
+                {
+                    dRand -= 0.5;
+                    dRand *= 2;
+                }
+                dRand *= maxValue;
+                if (!allowDec)
+                {
+                    dRand = Math.Truncate(dRand);
+                }
+                else
+                {
+                    dRand = Math.Round(dRand, maxPrecision);
+                }
+                AtomExpr aexp0 = new AtomExpr(dRand);
+                dRand = r.NextDouble();
+                if (allowNeg)
+                {
+                    dRand -= 0.5;
+                    dRand *= 2;
+                }
+                dRand *= maxValue;
+                if (!allowDec)
+                {
+                    dRand = Math.Truncate(dRand);
+                }
+                else
+                {
+                    dRand = Math.Round(dRand, maxPrecision);
+                }
+                AtomExpr aexp1 = new AtomExpr(dRand);
                 Expr ecombine = new Expr();
                 if(!allowNeg)
                 {
@@ -282,11 +290,69 @@ namespace MyExpression
                 {
                     hsetOprt.Remove(ExprOprt.DIV);
                 }
-                ecombine.oprt = ChooseOprt(hsetOprt);
+                ecombine.oprt = ChooseOprt(hsetOprt,r);
                 ecombine.expr0 = aexp0;
                 ecombine.expr1 = aexp1;
                 return ecombine;
             }
+        }
+        public Expr BinaryGenerate(ExprOprt oprt, Random r = null)
+        {
+            Expr ecombine = new Expr();
+            if (r == null)
+            {
+                r = new Random();
+            }
+            if (oprt == ExprOprt.NIL)
+            {
+                return null;
+            }
+            else
+            {
+                ecombine.oprt = oprt;
+            }
+            double dRand0 = r.NextDouble();
+            double dRand1 = r.NextDouble();
+            
+            if (allowNeg)
+            {
+                dRand0 -= 0.5;
+                dRand0 *= 2;
+                dRand1 -= 0.5;
+                dRand1 *= 2;
+            }
+            else
+            {
+                if (dRand0 < dRand1)
+                {
+                    var t = dRand0;
+                    dRand0 = dRand1;
+                    dRand1 = t;
+                }
+            }
+            while (oprt == ExprOprt.DIV && Math.Truncate(Math.Abs(dRand1) * maxValue) < double.Epsilon)
+            {
+                dRand1 = r.NextDouble();
+                if (allowNeg)
+                    dRand1 = (dRand1 - 0.5) * 2;
+            }
+            dRand0 *= maxValue;
+            dRand1 *= maxValue;
+            if (!allowDec)
+            {
+                dRand0 = Math.Truncate(dRand0);
+                dRand1 = Math.Truncate(dRand1);
+            }
+            else
+            {
+                dRand0 = Math.Round(dRand0, maxPrecision);
+                dRand1 = Math.Round(dRand0, maxPrecision);
+            }
+            AtomExpr aexp0 = new AtomExpr(dRand0);
+            AtomExpr aexp1 = new AtomExpr(dRand1);
+            ecombine.expr0 = aexp0;
+            ecombine.expr1 = aexp1;
+            return ecombine;
         }
     }
 
